@@ -25,6 +25,9 @@ type SettingsStore = {
 	showMiniSectors: boolean;
 	setShowMiniSectors: (showMiniSectors: boolean) => void;
 
+	showDriverLastName: boolean;
+	setShowDriverLastName: (showDriverFullName: boolean) => void;
+
 	favoriteDrivers: string[];
 	setFavoriteDrivers: (favoriteDrivers: string[]) => void;
 	removeFavoriteDriver: (driver: string) => void;
@@ -63,6 +66,9 @@ export const useSettingsStore = create<SettingsStore>()(
 
 				showMiniSectors: true,
 				setShowMiniSectors: (showMiniSectors: boolean) => set({ showMiniSectors }),
+
+				showDriverLastName: false,
+				setShowDriverLastName: (showDriverFullName: boolean) => set({ showDriverLastName: showDriverFullName }),
 
 				favoriteDrivers: [],
 				setFavoriteDrivers: (favoriteDrivers: string[]) => set({ favoriteDrivers }),
