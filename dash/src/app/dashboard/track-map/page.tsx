@@ -86,30 +86,27 @@ const TrackMapDriver = ({ position, driver, timingDriver }: TrackMapDriverProps)
 	return (
 		<motion.div
 			layout="position"
-			className={clsx("flex flex-col gap-1 rounded-lg p-1.5 select-none", {
+			className={clsx("grid items-center gap-1 rounded-lg p-1.5 select-none", {
 				"opacity-50": timingDriver.knockedOut || timingDriver.retired || timingDriver.stopped,
 				"bg-sky-800/30": favoriteDriver,
 				"bg-violet-800/30": hasFastest,
 				"bg-red-800/30": sessionPart != undefined && inDangerZone(position, sessionPart),
 			})}
+			style={{
+				gridColumn: "1 / -1",
+				display: "subgrid",
+			}}
 		>
-			<div
-				className="grid items-center gap-2"
-				style={{
-					gridTemplateColumns: "5.5rem 3.5rem 4rem 5rem 5rem",
-				}}
-			>
-				<DriverTag className="min-w-full!" short={driver.tla} teamColor={driver.teamColour} position={position} />
-				<DriverDRS
-					on={carData ? hasDRS(carData[45]) : false}
-					possible={carData ? possibleDRS(carData[45]) : false}
-					inPit={timingDriver.inPit}
-					pitOut={timingDriver.pitOut}
-				/>
-				<DriverInfo timingDriver={timingDriver} gridPos={appTimingDriver ? parseInt(appTimingDriver.gridPos) : 0} />
-				<DriverGap timingDriver={timingDriver} sessionPart={sessionPart} />
-				<DriverLapTime last={timingDriver.lastLapTime} best={timingDriver.bestLapTime} hasFastest={hasFastest} />
-			</div>
+			<DriverTag className="min-w-full!" short={driver.tla} teamColor={driver.teamColour} position={position} />
+			<DriverDRS
+				on={carData ? hasDRS(carData[45]) : false}
+				possible={carData ? possibleDRS(carData[45]) : false}
+				inPit={timingDriver.inPit}
+				pitOut={timingDriver.pitOut}
+			/>
+			<DriverInfo timingDriver={timingDriver} gridPos={appTimingDriver ? parseInt(appTimingDriver.gridPos) : 0} />
+			<DriverGap timingDriver={timingDriver} sessionPart={sessionPart} />
+			<DriverLapTime last={timingDriver.lastLapTime} best={timingDriver.bestLapTime} hasFastest={hasFastest} />
 		</motion.div>
 	);
 };
@@ -118,27 +115,19 @@ const SkeletonDriver = () => {
 	const animateClass = "h-8 animate-pulse rounded-md bg-zinc-800";
 
 	return (
-		<div
-			className="grid place-items-center items-center gap-1 p-1"
-			style={{
-				gridTemplateColumns: "5.5rem 4rem 5.5rem 5rem 5rem",
-			}}
-		>
-			<div className={animateClass} style={{ width: "100%" }} />
-
-			<div className={animateClass} style={{ width: "90%" }} />
-
+		<>
+			<div className={clsx(animateClass, "p-1")} style={{ width: "100%" }} />
+			<div className={clsx(animateClass, "p-1")} style={{ width: "90%" }} />
 			{new Array(2).fill(null).map((_, index) => (
-				<div className="flex w-full flex-col gap-1" key={`skeleton.${index}`}>
+				<div className="flex w-full flex-col gap-1 p-1" key={`skeleton.${index}`}>
 					<div className={clsx(animateClass, "h-4!")} />
 					<div className={clsx(animateClass, "h-3! w-2/3")} />
 				</div>
 			))}
-
-			<div className="flex w-full flex-col gap-1">
+			<div className="flex w-full flex-col gap-1 p-1">
 				<div className={clsx(animateClass, "h-3! w-4/5")} />
 				<div className={clsx(animateClass, "h-4!")} />
 			</div>
-		</div>
+		</>
 	);
 };
